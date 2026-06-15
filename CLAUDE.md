@@ -112,3 +112,7 @@ fakekite/
 - `/instruments` returns a **CSV dump**, not JSON. Match the column order in the spec.
 - Rate limits differ per endpoint (see spec). When tripped, return HTTP **429** with
   the error envelope so the terminal's backoff logic gets tested.
+
+
+## Git rules
+- Do not use any git commands unless explicitly told to do so. Do not commit any files unless explicitly told to do so.
