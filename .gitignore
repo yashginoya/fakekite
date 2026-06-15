@@ -36,3 +36,5 @@ config.yaml
 .vscode/
 *.swp
 .DS_Store
+
+CHANGELOG.md
