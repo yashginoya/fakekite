@@ -1,0 +1,69 @@
+# FakeKite example config. Copy to config.yaml and edit.
+# Read once at startup. Latency/behaviour can also be changed at runtime via the
+# /_control/* endpoints without a restart.
+
+server:
+  rest_host: 127.0.0.1
+  rest_port: 8000
+  ws_path: /ws            # full WS URL the terminal points at: ws://127.0.0.1:8000/ws
+
+auth:
+  mode: accept_any        # accept_any | fixed
+  # when mode: fixed, only this pair is accepted:
+  # api_key: my_test_key
+  # access_token: my_test_token
+
+orders:
+  default_state: COMPLETE # COMPLETE | OPEN | REJECTED  (terminal state every new order lands in)
+  reject_message: "Insufficient funds. Required margin is 95417.84 but available margin is 74251.80."
+  emit_order_history: true   # GET /orders/:id returns a few successive states
+
+latency:
+  rest_ms: 0              # base delay added to every REST response
+  rest_jitter_ms: 0       # uniform random extra delay in [0, jitter]
+  ws_tick_interval_ms: 1000   # how often each subscribed instrument emits a tick
+  ws_push_delay_ms: 0     # extra delay before pushing a market-data frame
+  order_update_delay_ms: 0    # delay before the WS order-update text frame after a state change
+  heartbeat_interval_ms: 2000 # 1-byte heartbeat cadence when idle
+
+rate_limit:
+  enabled: false          # default off; turn on to test the terminal's 429 backoff
+  # per-endpoint overrides use the documented Kite limits when enabled
+
+market:
+  seed: 42                # deterministic random walk
+  instruments:
+    - token: 256265
+      symbol: "NIFTY 50"
+      exchange: NSE
+      is_index: true
+      tick_size: 0.05
+      start_price: 23000.0
+      volatility: 0.0008      # per-tick stddev as a fraction of price
+    - token: 408065
+      symbol: INFY
+      exchange: NSE
+      segment: NSE
+      is_index: false
+      tick_size: 0.05
+      lot_size: 1
+      start_price: 1500.0
+      volatility: 0.0015
+    - token: 779521
+      symbol: SBIN
+      exchange: NSE
+      segment: NSE
+      is_index: false
+      tick_size: 0.05
+      lot_size: 1
+      start_price: 820.0
+      volatility: 0.0015
+    - token: 412675
+      symbol: USDINR25JUNFUT
+      exchange: CDS         # currency segment: prices scaled by 1e7 in packets
+      segment: CDS
+      is_index: false
+      tick_size: 0.0025
+      lot_size: 1
+      start_price: 83.50
+      volatility: 0.0005

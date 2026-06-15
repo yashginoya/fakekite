@@ -1,0 +1,38 @@
+[project]
+name = "fakekite"
+version = "0.1.0"
+description = "Local mock of Zerodha's Kite Connect v3 API (REST + WebSocket) for testing a trading terminal"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic>=2",
+    "pyyaml",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "httpx",
+    "ruff",
+]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["fakekite*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP", "B"]
+# FastAPI's Depends()/Query() default-argument pattern is idiomatic, not a bug.
+ignore = ["B008"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
